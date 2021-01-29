@@ -234,4 +234,10 @@ impl Game {
                 .execute(Print(symbol)).unwrap();
         }
     }
+    fn calculate_interval(&self) -> Duration {
+        let speed = MAX_SPEED - self.speed;
+        Duration::from_millis(
+            (MIN_INTERVAL + (((MAX_INTERVAL - MIN_INTERVAL) / MAX_SPEED) * speed)) as u64
+        )
+    }
 }
