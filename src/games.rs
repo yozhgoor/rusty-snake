@@ -278,4 +278,12 @@ impl Game {
             Direction::Left => head_point.x == 0,
         }
     }
+    fn has_bitten_itself(&self) -> bool {
+        let next_head_point = self.snake.get_head_point().transform(self.snake.get_direction(), 1);
+        let mut next_body_points = self.snake.get_body_points().clone();
+        next_body_points.remove(next_body_points.len() - 1);
+        next_body_points.remove(0);
+
+        next_body_points.contains(&next_head_point)
+    }
 }
