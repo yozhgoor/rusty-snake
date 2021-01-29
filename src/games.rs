@@ -234,4 +234,65 @@ impl Game {
                 .execute(Print(symbol)).unwrap();
         }
     }
+    fn calculate_interval(&self) -> Duration {
+        let speed = MAX_SPEED - self.speed;
+        Duration::from_millis(
+            (MIN_INTERVAL + (((MAX_INTERVAL - MIN_INTERVAL) / MAX_SPEED) * speed)) as u64
+        )
+    }
+    fn get_command(&self, wait_for: Duration) -> Option<Command> {
+        let key_event = self.wait_for_key_event(wait_for)?;
+
+        match key_event.code {
+            KeyCode::Char('q') | KeyCode::Char('Q') | KeyCode::Esc => Some(Command::Quit),
+            KeyCode::Char('c') | KeyCode::Char('C') =>
+                if key_event.modifiers == keyModifiers::Control {
+                    Some(Command::Quit)
+                } else {
+                    None
+                }
+            KeyCode::Up => Some(Command::Turn(Direction::Up)),
+            KeyCode::Right => Some(Command::Turn(Direction::Right)),
+            KeyCode::Down => Some(Command::Turn(Direction::Down)),
+            KeyCode::Left => Some(Command::Turn(Direction::Left)),
+            - => None
+        }
+    }
+    fn wait_for_key_event(&self, wait_for: Duration) -> Option<KeyEvent> {
+        if poll(wait_for).ok()? {
+            let event = read().ok()?;
+            if let Event::Key(key_event) = event {
+                return Some(key_event);
+            }
+        }
+
+        None
+    }
+    fn has_collided_with_wall(&self) -> bool {
+        let head_point = self.snake.get_head_point();
+
+        match self.snake.get_direction() {
+            Direction::Up => head_point.y == 0,
+            Direction::Right => head_point.x == self.width - 1,
+            Direction::Down => head_point.y == self.height - 1,
+            Direction::Left => head_point.x == 0,
+        }
+    }
+    fn has_bitten_itself(&self) -> bool {
+        let next_head_point = self.snake.get_head_point().transform(self.snake.get_direction(), 1);
+        let mut next_body_points = self.snake.get_body_points().clone();
+        next_body_points.remove(next_body_points.len() - 1);
+        next_body_points.remove(0);
+
+        next_body_points.contains(&next_head_point)
+    }
+    fn restore_ui(&mut self) {
+        let (cols, rows) = self.original_terminal_size;
+        self.stdout
+            .execute(SetSize(cols, rows)).unwrap()
+            .execute(Clear(ClearType::All)).unwrap()
+            .execute(Show).unwrap()
+            .execute(ResetColor).unwrap();
+        disable_raw_mode().unwrap();
+    }
 }
