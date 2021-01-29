@@ -24,4 +24,7 @@ impl Snake {
     pub fn get_body_points(&self) -> Vec<Point> {
         self.body.clone()
     }
+    pub fn get_direction(&self) -> Direction {
+        self.direction.clone()
+    }
 }
