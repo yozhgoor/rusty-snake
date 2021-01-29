@@ -151,4 +151,15 @@ impl Game {
             .execute(MoveTo(0, self.height + 1)).unwrap()
             .execute(Print("#")).unwrap();
     }
+    fn draw_background(&mut self) {
+        self.stdout.execute(ResetColor).unwrap();
+
+        for y in 1..self.height + 1 {
+            for x in 1..self.width + 1 {
+                self.stdout
+                    .execute(MoveTo(x, y)).unwrap()
+                    .execute(Print(" ")).unwrap();
+            }
+        }
+    }
 }
