@@ -240,4 +240,22 @@ impl Game {
             (MIN_INTERVAL + (((MAX_INTERVAL - MIN_INTERVAL) / MAX_SPEED) * speed)) as u64
         )
     }
+    fn get_command(&self, wait_for: Duration) -> Option<Command> {
+        let key_event = self.wait_for_key_event(wait_for)?;
+
+        match key_event.code {
+            KeyCode::Char('q') | KeyCode::Char('Q') | KeyCode::Esc => Some(Command::Quit),
+            KeyCode::Char('c') | KeyCode::Char('C') =>
+                if key_event.modifiers == keyModifiers::Control {
+                    Some(Command::Quit)
+                } else {
+                    None
+                }
+            KeyCode::Up => Some(Command::Turn(Direction::Up)),
+            KeyCode::Right => Some(Command::Turn(Direction::Right)),
+            KeyCode::Down => Some(Command::Turn(Direction::Down)),
+            KeyCode::Left => Some(Command::Turn(Direction::Left)),
+            - => None
+        }
+    }
 }
