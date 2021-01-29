@@ -13,3 +13,28 @@ pub struct Game {
     speed: u16,
     score: u16,
 }
+
+impl Game {
+    pub fn new(stdout: Stdout, width: u16, height: u16) -> Self {
+        let original_terminal_size: (u16, u16) = size.unwrap();
+        Self{
+            stdout,
+            original_terminal_size,
+            width,
+            height,
+            food: None,
+            Snake: Snake::new(
+                Point::new(width / 2, height / 2),
+                3,
+                match rand::thread_rng().gen_range(0, 4) {
+                    0 => Direction::Up,
+                    1 => Direction::Right,
+                    2 => Direction::Down,
+                    _ => Direction::Left,
+                },
+            ),
+            speed: 0,
+            score: 0,
+        }
+    }
+}
