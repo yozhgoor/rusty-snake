@@ -116,4 +116,10 @@ impl Game {
             .execute(Clear(ClearType::All)).unwrap()
             .execute(Hide).unwrap();
     }
+    fn render(&mut self) {
+        self.draw_borders();
+        self.draw_background();
+        self.draw_food();
+        self.draw_snake();
+    }
 }
