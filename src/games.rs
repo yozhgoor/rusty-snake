@@ -162,4 +162,13 @@ impl Game {
             }
         }
     }
+    fn draw_food(&mut self) {
+        self.stdout.execute(SetForegroundColor(Color::White)).unwrap();
+
+        for food in self.food.iter() {
+            self.stdout
+                .execute(MoveTo(food.x + 1, food.y + 1)).unwrap()
+                .execute(Print("•")).unwrap();
+        }
+    }
 }
