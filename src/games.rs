@@ -286,4 +286,13 @@ impl Game {
 
         next_body_points.contains(&next_head_point)
     }
+    fn restore_ui(&mut self) {
+        let (cols, rows) = self.original_terminal_size;
+        self.stdout
+            .execute(SetSize(cols, rows)).unwrap()
+            .execute(Clear(ClearType::All)).unwrap()
+            .execute(Show).unwrap()
+            .execute(ResetColor).unwrap();
+        disable_raw_mode().unwrap();
+    }
 }
