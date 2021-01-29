@@ -46,4 +46,32 @@ impl Game {
             score: 0,
         }
     }
+    pub fn run(&mut self) {
+        self.place_food();
+        self.prepare_ui();
+        self.render();
+
+        let mut done = false;
+        while !done {
+            let interval = self.calculate_interval();
+            let direction = self.snake.get_direction();
+            let now = Instant::now();
+
+            while now.elapsed() < interval {
+                if let Some(command) = self.get_command(interval - now.elapsed()) {
+                    match command {
+                        Command::Quit => {
+                            done = true;
+                            break;
+                        }
+                        Command::Turn(towards) => {
+                            if direction != towards && direction.opposite() =! towards {
+                                self.snake.set_direction(towards);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
