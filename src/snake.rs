@@ -18,4 +18,7 @@ impl Snake {
 
         Self { body, direction, digesting: false }
     }
+    pub fn get_head_point(&self) -> Point {
+        self.body.first().unwrap().clone()
+    }
 }
