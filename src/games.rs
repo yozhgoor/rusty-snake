@@ -268,4 +268,14 @@ impl Game {
 
         None
     }
+    fn has_collided_with_wall(&self) -> bool {
+        let head_point = self.snake.get_head_point();
+
+        match self.snake.get_direction() {
+            Direction::Up => head_point.y == 0,
+            Direction::Right => head_point.x == self.width - 1,
+            Direction::Down => head_point.y == self.height - 1,
+            Direction::Left => head_point.x == 0,
+        }
+    }
 }
