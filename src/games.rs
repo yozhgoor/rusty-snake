@@ -72,6 +72,30 @@ impl Game {
                     }
                 }
             }
+
+            if self.has_collided_with_wall() || self.has_bitten_itself() {
+                done = true;
+            } else {
+                self.snake.slither();
+
+                if let Some(food_point) = self.food {
+                    if self.snake.get_head_point() == food_point {
+                        self.snake.grow();
+                        self.place_food();
+                        self.score += 1;
+
+                        if self.score % ((self.width * self.height) / MAX_SPEED) == 0 {
+                            self.speed += 1;
+                        }
+                    }
+                }
+
+                self.render();
+            }
         }
+
+        self.restore_ui();
+
+        println!("Game Over! Your score is {}", self.score);
     }
 }
