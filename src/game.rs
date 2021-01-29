@@ -2,7 +2,7 @@ use crate::snake::Snake;
 use crate::point::Point;
 use crate::direction::Direction;
 use std::io::Stdout;
-use std::time{Duration, Instant};
+use std::time::{Duration, Instant};
 use crossterm::terminal::size;
 use crate::command::Command;
 use rand::Rng;
@@ -32,7 +32,7 @@ impl Game {
             width,
             height,
             food: None,
-            Snake: Snake::new(
+            snake: Snake::new(
                 Point::new(width / 2, height / 2),
                 3,
                 match rand::thread_rng().gen_range(0, 4) {
@@ -103,7 +103,7 @@ impl Game {
             let random_x = rand::thread_rng().gen_range(0, self.width);
             let random_y = rand::thread_rng().gen_range(0, self.height);
             let point = Point::new(random_x, random_y);
-            if !self.snake.contains_point(&point) {
+            if !self.snake.contains_points(&point) {
                 self.food = Some(Point);
                 break;
             }
