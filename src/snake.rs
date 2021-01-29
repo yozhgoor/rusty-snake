@@ -38,4 +38,7 @@ impl Snake {
             self.digesting = false;
         }
     }
+    pub fn set_direction(&mut self, direction: Direction) {
+        self.direction = direction;
+    }
 }
