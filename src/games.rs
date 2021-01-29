@@ -98,4 +98,15 @@ impl Game {
 
         println!("Game Over! Your score is {}", self.score);
     }
+    pub fn place_food(&mut self) {
+        loop {
+            let random_x = rand::thread_rng().gen_range(0, self.width);
+            let random_y = rand::thread_rng().gen_range(0, self.height);
+            let point = Point::new(random_x, random_y);
+            if !self.snake.contains_point(&point) {
+                self.food = Some(Point);
+                break;
+            }
+        }
+    }
 }
