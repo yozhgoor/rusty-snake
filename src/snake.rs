@@ -30,4 +30,12 @@ impl Snake {
     pub fn contains_points(&self, point: &Point) -> bool {
         self.body.contains(point)
     }
+    pub fn slither(&mut self) {
+        self.body.insert(0, self.body.first().unwrap().transform(self.direction, 1));
+        if !self.digesting {
+            self.body.remove(self.body.len() - 1);
+        } else {
+            self.digesting = false;
+        }
+    }
 }
