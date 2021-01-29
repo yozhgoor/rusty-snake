@@ -27,4 +27,7 @@ impl Snake {
     pub fn get_direction(&self) -> Direction {
         self.direction.clone()
     }
+    pub fn contains_points(&self, point: &Point) -> bool {
+        self.body.contains(point)
+    }
 }
