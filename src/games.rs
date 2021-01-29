@@ -258,4 +258,14 @@ impl Game {
             - => None
         }
     }
+    fn wait_for_key_event(&self, wait_for: Duration) -> Option<KeyEvent> {
+        if poll(wait_for).ok()? {
+            let event = read().ok()?;
+            if let Event::Key(key_event) = event {
+                return Some(key_event);
+            }
+        }
+
+        None
+    }
 }
