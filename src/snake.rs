@@ -21,4 +21,7 @@ impl Snake {
     pub fn get_head_point(&self) -> Point {
         self.body.first().unwrap().clone()
     }
+    pub fn get_body_points(&self) -> Vec<Point> {
+        self.body.clone()
+    }
 }
