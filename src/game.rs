@@ -50,6 +50,7 @@ impl Game {
             score: 0,
         }
     }
+
     pub fn run(&mut self) {
         self.place_food();
         self.prepare_ui();
@@ -102,6 +103,7 @@ impl Game {
 
         println!("Game Over! Your score is {}", self.score);
     }
+
     pub fn place_food(&mut self) {
         loop {
             let random_x = rand::thread_rng().gen_range(0, self.width);
@@ -113,6 +115,7 @@ impl Game {
             }
         }
     }
+
     pub fn prepare_ui(&mut self) {
         enable_raw_mode().unwrap();
         self.stdout
@@ -123,12 +126,14 @@ impl Game {
             .execute(Hide)
             .unwrap();
     }
+
     fn render(&mut self) {
         self.draw_borders();
         self.draw_background();
         self.draw_food();
         self.draw_snake();
     }
+
     fn draw_borders(&mut self) {
         self.stdout
             .execute(SetForegroundColor(Color::DarkGrey))
@@ -176,6 +181,7 @@ impl Game {
             .execute(Print("#"))
             .unwrap();
     }
+
     fn draw_background(&mut self) {
         self.stdout.execute(ResetColor).unwrap();
 
@@ -189,6 +195,7 @@ impl Game {
             }
         }
     }
+
     fn draw_food(&mut self) {
         self.stdout
             .execute(SetForegroundColor(Color::White))
@@ -202,6 +209,7 @@ impl Game {
                 .unwrap();
         }
     }
+
     fn draw_snake(&mut self) {
         let fg = SetForegroundColor(match self.speed % 3 {
             0 => Color::Green,
@@ -263,12 +271,14 @@ impl Game {
                 .unwrap();
         }
     }
+
     fn calculate_interval(&self) -> Duration {
         let speed = MAX_SPEED - self.speed;
         Duration::from_millis(
             (MIN_INTERVAL + (((MAX_INTERVAL - MIN_INTERVAL) / MAX_SPEED) * speed)) as u64,
         )
     }
+
     fn get_command(&self, wait_for: Duration) -> Option<Command> {
         let key_event = self.wait_for_key_event(wait_for)?;
 
@@ -288,6 +298,7 @@ impl Game {
             _ => None,
         }
     }
+
     fn wait_for_key_event(&self, wait_for: Duration) -> Option<KeyEvent> {
         if poll(wait_for).ok()? {
             let event = read().ok()?;
@@ -298,6 +309,7 @@ impl Game {
 
         None
     }
+
     fn has_collided_with_wall(&self) -> bool {
         let head_point = self.snake.get_head_point();
 
@@ -308,6 +320,7 @@ impl Game {
             Direction::Left => head_point.x == 0,
         }
     }
+
     fn has_bitten_itself(&self) -> bool {
         let next_head_point = self
             .snake
@@ -319,6 +332,7 @@ impl Game {
 
         next_body_points.contains(&next_head_point)
     }
+
     fn restore_ui(&mut self) {
         let (cols, rows) = self.original_terminal_size;
         self.stdout
