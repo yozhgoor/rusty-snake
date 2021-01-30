@@ -1,11 +1,15 @@
-use crate::snake::Snake;
-use crate::point::Point;
+use crate::command::Command;
 use crate::direction::Direction;
+use crate::point::Point;
+use crate::snake::Snake;
+use crossterm::cursor::{Hide, MoveTo, Show};
+use crossterm::event::{poll, read, Event, KeyCode, KeyEvent, KeyModifiers};
+use crossterm::style::{Color, Print, ResetColor, SetForegroundColor};
+use crossterm::terminal::{disable_raw_mode, enable_raw_mode, size, Clear, ClearType, SetSize};
+use crossterm::ExecutableCommand;
+use rand::Rng;
 use std::io::Stdout;
 use std::time::{Duration, Instant};
-use crossterm::terminal::size;
-use crate::command::Command;
-use rand::Rng;
 
 const MAX_INTERVAL: u16 = 700;
 const MIN_INTERVAL: u16 = 200;
