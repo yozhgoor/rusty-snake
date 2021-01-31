@@ -24,7 +24,7 @@ impl Snake {
     }
 
     pub fn get_head_point(&self) -> Point {
-        self.body.first().unwrap().clone()
+        *self.body.first().unwrap()
     }
 
     pub fn get_body_points(&self) -> Vec<Point> {
@@ -32,7 +32,7 @@ impl Snake {
     }
 
     pub fn get_direction(&self) -> Direction {
-        self.direction.clone()
+        self.direction
     }
 
     pub fn contains_points(&self, point: &Point) -> bool {
