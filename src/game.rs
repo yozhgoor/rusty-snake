@@ -232,12 +232,12 @@ impl Game {
                         let d = body.transform(Direction::Down, 1);
                         let r = body.transform(Direction::Right, 1);
                         let u = if body.y == 0 {
-                            body.clone()
+                            *body
                         } else {
                             body.transform(Direction::Up, 1)
                         };
                         let l = if body.x == 0 {
-                            body.clone()
+                            *body
                         } else {
                             body.transform(Direction::Left, 1)
                         };
@@ -326,7 +326,7 @@ impl Game {
             .snake
             .get_head_point()
             .transform(self.snake.get_direction(), 1);
-        let mut next_body_points = self.snake.get_body_points().clone();
+        let mut next_body_points = self.snake.get_body_points();
         next_body_points.remove(next_body_points.len() - 1);
         next_body_points.remove(0);
 
